@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C38DD8662D42CAD800AE38E4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C38DD8652D42CAD800AE38E4 /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C38DD7B22D42C1FC00AE38E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C38DD8662D42CAD800AE38E4 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 				C38DD7A12D42C1FA00AE38E4 /* Drei */,
 				C38DD7B42D42C1FC00AE38E4 /* DreiTests */,
 				C38DD7BE2D42C1FC00AE38E4 /* DreiUITests */,
+				C38DD8642D42CAD800AE38E4 /* Frameworks */,
 				C38DD7A02D42C1FA00AE38E4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +96,13 @@
 				C38DD7BB2D42C1FC00AE38E4 /* DreiUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C38DD8642D42CAD800AE38E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +125,7 @@
 			);
 			name = Drei;
 			packageProductDependencies = (
+				C38DD8652D42CAD800AE38E4 /* Alamofire */,
 			);
 			productName = Drei;
 			productReference = C38DD79F2D42C1FA00AE38E4 /* Drei.app */;
@@ -195,6 +209,9 @@
 			);
 			mainGroup = C38DD7962D42C1FA00AE38E4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C38DD8632D42CABE00AE38E4 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C38DD7A02D42C1FA00AE38E4 /* Products */;
 			projectDirPath = "";
@@ -558,6 +575,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C38DD8632D42CABE00AE38E4 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C38DD8652D42CAD800AE38E4 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C38DD8632D42CABE00AE38E4 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C38DD7972D42C1FA00AE38E4 /* Project object */;
 }

@@ -10,6 +10,9 @@ import SwiftData
 
 @main
 struct DreiApp: App {
+
+    @StateObject var contentViewModel = ContentView.ViewModel()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -25,7 +28,7 @@ struct DreiApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(viewModel: contentViewModel)
         }
         .modelContainer(sharedModelContainer)
     }
