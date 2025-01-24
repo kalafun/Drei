@@ -75,8 +75,8 @@ struct Weather: Decodable {
 }
 
 struct Wind: Decodable {
-    let speed: Float
-    let gust: Float
+    let speed: Float?
+    let gust: Float?
 }
 
 struct MainWeather: Decodable {
@@ -111,7 +111,7 @@ struct WeatherErrorResponse: Decodable {
 struct SearchCityResponse: Decodable {
     let weather: [Weather]
     let main: MainWeather
-    let wind: Wind
+    let wind: Wind?
     let name: String
     let rain: Precipation?
     let snow: Precipation?

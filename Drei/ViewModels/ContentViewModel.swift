@@ -30,8 +30,8 @@ extension ContentView {
         }
 
         var windSpeed: String? {
-            if let wind = response?.wind {
-                return "\(wind.speed) m/s"
+            if let windSpeed = response?.wind?.speed {
+                return "\(windSpeed) m/s"
             }
             
             return nil
