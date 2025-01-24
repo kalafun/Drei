@@ -15,7 +15,7 @@ protocol SearchWeatherServiceProtocol: Service {
 
 class SearchWeatherService: Service, SearchWeatherServiceProtocol {
 
-    var cacher = Cacher<SearchCityResponse>()
+    private let cacher = Cacher<SearchCityResponse>()
 
     func searchCity(name: String) async throws -> SearchCityResponse {
 
