@@ -12,4 +12,11 @@ class AppViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var showsError = false
     var localizedError: WeatherError?
+
+    func handleAPIError(_ error: Error) {
+        if let weatherError = error as? WeatherError {
+            self.localizedError = weatherError
+            self.showsError = true
+        }
+    }
 }

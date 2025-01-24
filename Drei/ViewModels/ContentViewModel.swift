@@ -77,10 +77,7 @@ extension ContentView {
                 }
             } catch {
                 print(error)
-                if let weatherError = error as? WeatherError {
-                    self.localizedError = weatherError
-                    self.showsError = true
-                }
+                handleAPIError(error)
             }
 
             isLoading = false
