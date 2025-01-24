@@ -121,5 +121,4 @@ struct ContentView: View {
                 await viewModel.getCity()
             }
         }
-//        .modelContainer(for: Item.self, inMemory: true) as! SearchCityResponse
 }
