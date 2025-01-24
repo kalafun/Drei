@@ -22,6 +22,11 @@ struct ContentView: View {
                     ProgressView()
                 }
             }
+            .onAppear {
+                Task {
+                    await viewModel.showCachedDataIfNecessary()
+                }
+            }
             .alert(isPresented: $viewModel.showsError, error: viewModel.localizedError, actions: { })
         }
     }

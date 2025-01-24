@@ -17,6 +17,8 @@ extension ContentView {
         @Published var response: SearchCityResponse?
         @Published var iconURL: URL?
 
+        private let networkMonitor = NetworkMonitor.shared
+
         var cityName: String? {
             response?.name
         }
@@ -81,6 +83,14 @@ extension ContentView {
             }
 
             isLoading = false
+        }
+
+        func showCachedDataIfNecessary() async {
+            if !networkMonitor.isConnected {
+                Task {
+                    await getCity()
+                }
+            }
         }
     }
 }
