@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import SDWebImageSwiftUI
 
 struct ContentView: View {
 
@@ -50,6 +51,13 @@ struct ContentView: View {
     @ViewBuilder
     private var weatherView: some View {
         VStack(spacing: 8) {
+
+            if let iconURL = viewModel.iconURL {
+                WebImage(url: iconURL)
+                    .resizable()
+                    .frame(width: 100, height: 100)
+            }
+
             if let cityName = viewModel.cityName {
                 Text(cityName)
                     .font(.largeTitle)

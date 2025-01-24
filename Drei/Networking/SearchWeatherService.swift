@@ -10,6 +10,7 @@ import Alamofire
 
 protocol SearchWeatherServiceProtocol: Service {
     func searchCity(name: String) async throws -> SearchCityResponse
+    func getWeatherIconURL(icon: String) -> URL?
 }
 
 class SearchWeatherService: Service, SearchWeatherServiceProtocol {
@@ -21,6 +22,10 @@ class SearchWeatherService: Service, SearchWeatherServiceProtocol {
             parameters: SearchCityRequest(q: name, appid: Config.API.OWAPIKey)
         )
         .responseData(decodingType: SearchCityResponse.self)
+    }
+
+    func getWeatherIconURL(icon: String) -> URL? {
+        Config.API.weatherURL.appendingPathComponent("\(icon)@2x.png")
     }
 }
 
@@ -50,6 +55,10 @@ class SearchWeatherServiceMocked: Service, SearchWeatherServiceProtocol {
             rain: Precipation(oneHour: 0.1),
             snow: Precipation(oneHour: 0.14)
         )
+    }
+
+    func getWeatherIconURL(icon: String) -> URL? {
+        URL(string: "https://openweathermap.org/img/wn/10d@2x.png")
     }
 }
 

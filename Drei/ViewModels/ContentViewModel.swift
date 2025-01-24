@@ -15,6 +15,7 @@ extension ContentView {
         private let searchWeatherService: SearchWeatherServiceProtocol
         @Published var searchName = ""
         @Published var response: SearchCityResponse?
+        @Published var iconURL: URL?
 
         var cityName: String? {
             response?.name
@@ -70,6 +71,10 @@ extension ContentView {
             do {
                 self.response = try await searchWeatherService.searchCity(name: searchName)
                 searchName = ""
+
+                if let icon = response?.weather.first?.icon {
+                    iconURL = searchWeatherService.getWeatherIconURL(icon: icon)
+                }
             } catch {
                 print(error)
             }
