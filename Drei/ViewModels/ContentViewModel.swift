@@ -14,6 +14,19 @@ extension ContentView {
 
         private let searchWeatherService: SearchWeatherServiceProtocol
         @Published var searchName = ""
+        @Published var response: SearchCityResponse?
+
+        var cityName: String? {
+            response?.name
+        }
+
+        var temperature: String? {
+            if let temp = response?.main.temp {
+                return "\(temp) °C"
+            }
+
+            return nil
+        }
 
         init(searchWeatherService: SearchWeatherServiceProtocol = SearchWeatherService()) {
             self.searchWeatherService = searchWeatherService
@@ -23,7 +36,7 @@ extension ContentView {
             isLoading = true
 
             do {
-                let response = try await searchWeatherService.searchCity(name: searchName)
+                self.response = try await searchWeatherService.searchCity(name: searchName)
             } catch {
                 print(error)
             }

@@ -24,6 +24,33 @@ class SearchWeatherService: Service, SearchWeatherServiceProtocol {
     }
 }
 
+class SearchWeatherServiceMocked: Service, SearchWeatherServiceProtocol {
+    func searchCity(name: String) async throws -> SearchCityResponse {
+        SearchCityResponse(
+            weather: [
+                Weather(
+                    main: "Clouds",
+                    description: "overcast clouds",
+                    icon: "04n"
+                )
+            ],
+            main: MainWeather(
+                temp: 3.52,
+                feelsLike: 3.52,
+                pressure: 1017,
+                humidity: 84,
+                tempMin: 1.09,
+                tempMax: 4.6
+            ),
+            wind: Wind(
+                speed: 0.45,
+                gust: 2.24
+            ),
+            name: "Vienna"
+        )
+    }
+}
+
 struct SearchCityRequest: Encodable {
     let q: String
     let appid: String

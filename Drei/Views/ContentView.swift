@@ -14,32 +14,63 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                TextField("City name", text: $viewModel.searchName)
-                    .padding()
-                    .background(.black.opacity(0.05))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding()
-                    .onSubmit {
-                        Task {
-                            await viewModel.getCity()
+            ScrollView {
+                VStack {
+                    TextField("City name", text: $viewModel.searchName)
+                        .padding()
+                        .background(.black.opacity(0.05))
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .padding()
+                        .onSubmit {
+                            Task {
+                                await viewModel.getCity()
+                            }
                         }
-                    }
-                    .submitLabel(.search)
+                        .submitLabel(.search)
 
-                Spacer()
+                    Spacer()
+
+                    if viewModel.response != nil {
+                        weatherView
+                    }
+
+                    Spacer()
+                }
             }
             .navigationTitle("Drei Weather")
+            .overlay {
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var weatherView: some View {
+        VStack(spacing: 8) {
+            if let cityName = viewModel.cityName {
+                Text(cityName)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+            }
+            if let temperature = viewModel.temperature {
+                Text(temperature)
+                    .font(.title)
+            }
         }
     }
 }
 
 #Preview {
-    ContentView(viewModel: ContentView.ViewModel())
-        .modelContainer(for: Item.self, inMemory: true)
-}
+    @StateObject @Previewable var viewModel = ContentView.ViewModel()
 
-@MainActor
-class AppViewModel: ObservableObject {
-    @Published var isLoading = false
+    return ContentView(viewModel: viewModel)
+        .onAppear {
+            viewModel.searchName = "London"
+            Task {
+                await viewModel.getCity()
+            }
+        }
+//        .modelContainer(for: Item.self, inMemory: true) as! SearchCityResponse
 }
