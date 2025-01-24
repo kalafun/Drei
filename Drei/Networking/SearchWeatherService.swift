@@ -103,7 +103,15 @@ struct Precipation: Decodable {
     }
 }
 
-struct SearchCityResponse: Decodable {
+protocol WeatherResponse: Decodable {
+    var cod: String? { get }
+    var message: String? { get }
+}
+
+struct SearchCityResponse: WeatherResponse {
+    var cod: String?
+    var message: String?
+
     let weather: [Weather]
     let main: MainWeather
     let wind: Wind
@@ -112,16 +120,35 @@ struct SearchCityResponse: Decodable {
     let snow: Precipation?
 }
 
+enum WeatherError: LocalizedError {
+    case cityNotFound
+
+    var errorDescription: String? {
+        switch self {
+            case .cityNotFound:
+                return "City not found"
+        }
+    }
+}
+
 extension Alamofire.DataRequest {
-    func responseData<D: Decodable>(decodingType: D.Type) async throws -> D {
+    func responseData<D: WeatherResponse>(decodingType: D.Type) async throws -> D {
         return try await withCheckedThrowingContinuation { continuation in
             self.responseData { response in
-                print(response.request?.urlRequest)
+                print(response.request?.urlRequest ?? "NO REQUEST DATA")
 
                 if let data = response.data {
                     print(NSString(data: data, encoding: String.Encoding.utf8.rawValue) ?? "")
                     do {
                         let decodedObject = try JSONDecoder().decode(D.self, from: data)
+
+                        // check for errors:
+                        if let cod = decodedObject.cod {
+                            if cod == "404" {
+                                continuation.resume(throwing: WeatherError.cityNotFound)
+                            }
+                        }
+
                         continuation.resume(returning: decodedObject)
                     } catch {
                         continuation.resume(throwing: error)
