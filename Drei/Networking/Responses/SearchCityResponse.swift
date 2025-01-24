@@ -7,18 +7,18 @@
 
 import Foundation
 
-struct Weather: Decodable {
+struct Weather: Codable {
     let main: String
     let description: String
     let icon: String
 }
 
-struct Wind: Decodable {
+struct Wind: Codable {
     let speed: Float?
     let gust: Float?
 }
 
-struct MainWeather: Decodable {
+struct MainWeather: Codable {
     let temp: Float
 
     enum CodingKeys: String, CodingKey {
@@ -26,7 +26,7 @@ struct MainWeather: Decodable {
     }
 }
 
-struct Precipation: Decodable {
+struct Precipation: Codable {
     let oneHour: Float
 
     enum CodingKeys: String, CodingKey {
@@ -34,7 +34,7 @@ struct Precipation: Decodable {
     }
 }
 
-struct SearchCityResponse: Decodable {
+struct SearchCityResponse: Codable {
     let weather: [Weather]
     let main: MainWeather
     let wind: Wind?
