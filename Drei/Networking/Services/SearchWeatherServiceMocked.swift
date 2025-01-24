@@ -18,12 +18,7 @@ class SearchWeatherServiceMocked: Service, SearchWeatherServiceProtocol {
                 )
             ],
             main: MainWeather(
-                temp: 3.52,
-                feelsLike: 3.52,
-                pressure: 1017,
-                humidity: 84,
-                tempMin: 1.09,
-                tempMax: 4.6
+                temp: 3.52
             ),
             wind: Wind(
                 speed: 0.45,
