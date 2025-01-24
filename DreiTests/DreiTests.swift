@@ -10,20 +10,43 @@ import XCTest
 
 final class DreiTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private let searchWeatherServiceMocked = SearchWeatherServiceMocked()
+    private let searchWeatherServiceFailingMocked = SearchWeatherServiceFailingMocked()
+    private let cityName = "Vienna"
+
+    func testTemperatureNotNil() async throws {
+        let response = try await searchWeatherServiceMocked.searchCity(name: cityName)
+        XCTAssertNotNil(response.main.temp)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testWeatherIconNotNil() async throws {
+        let response = try await searchWeatherServiceMocked.searchCity(name: cityName)
+        XCTAssertNotNil(response.weather.first?.icon)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testCityNameIsVienna() async throws {
+        let response = try await searchWeatherServiceMocked.searchCity(name: cityName)
+        XCTAssertTrue(response.name == "Vienna")
+    }
+
+    func testCityNameIsNotVienna() async throws {
+        let response = try await searchWeatherServiceMocked.searchCity(name: "Graz")
+        XCTAssertFalse(response.name == "Vienna")
+    }
+
+    func testCityNotFound() async {
+        do {
+            _ = try await searchWeatherServiceFailingMocked.searchCity(name: cityName)
+        } catch {
+            if let error = error as? WeatherError {
+                switch error {
+                    case .cityNotFound:
+                        XCTAssertTrue(true)
+                    default:
+                        XCTFail()
+                }
+            }
+        }
     }
 
     func testPerformanceExample() throws {
@@ -32,5 +55,4 @@ final class DreiTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
 }

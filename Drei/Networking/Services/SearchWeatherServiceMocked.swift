@@ -24,7 +24,7 @@ class SearchWeatherServiceMocked: Service, SearchWeatherServiceProtocol {
                 speed: 0.45,
                 gust: 2.24
             ),
-            name: "Vienna",
+            name: name,
             rain: Precipation(oneHour: 0.1),
             snow: Precipation(oneHour: 0.14)
         )
