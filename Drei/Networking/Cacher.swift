@@ -7,19 +7,22 @@
 
 import Foundation
 
-class Cacher {
-    private let cacheKey = "LastSearchCityResponse"
+class Cacher<C: Codable> {
 
-    func cacheResponse(_ response: SearchCityResponse) {
+    private var cacheKey: String {
+        "\(C.self)"
+    }
+
+    func cacheResponse(_ response: C) {
         let encoder = JSONEncoder()
         if let data = try? encoder.encode(response) {
             UserDefaults.standard.set(data, forKey: cacheKey)
         }
     }
 
-    func getCachedResponse() -> SearchCityResponse? {
+    func getCachedResponse() -> C? {
         guard let data = UserDefaults.standard.data(forKey: cacheKey) else { return nil }
         let decoder = JSONDecoder()
-        return try? decoder.decode(SearchCityResponse.self, from: data)
+        return try? decoder.decode(C.self, from: data)
     }
 }
