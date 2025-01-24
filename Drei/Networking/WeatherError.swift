@@ -10,6 +10,7 @@ import Foundation
 enum WeatherError: LocalizedError {
     case cityNotFound
     case noInternetAndNoCachedData
+    case other(localizedErrorString: String)
 
     var errorDescription: String? {
         switch self {
@@ -17,6 +18,8 @@ enum WeatherError: LocalizedError {
                 return "City not found"
             case .noInternetAndNoCachedData:
                 return "No internet and no cached data"
+            case let .other(localizedErrorString):
+                return localizedErrorString
         }
     }
 }
