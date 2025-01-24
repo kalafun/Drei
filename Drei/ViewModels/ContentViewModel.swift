@@ -28,6 +28,38 @@ extension ContentView {
             return nil
         }
 
+        var windSpeed: String? {
+            if let wind = response?.wind {
+                return "\(wind.speed) m/s"
+            }
+            
+            return nil
+        }
+
+        var rainPrecipation: String? {
+            if let precipation = response?.rain?.oneHour {
+                return "\(precipation) mm/h"
+            }
+
+            return nil
+        }
+
+        var snowPrecipation: String? {
+            if let precipation = response?.snow?.oneHour {
+                return "\(precipation) mm/h"
+            }
+
+            return nil
+        }
+
+        var weatherDescription: String? {
+            if let weatherDescription = response?.weather.first?.description {
+                return weatherDescription.capitalized
+            }
+
+            return nil
+        }
+
         init(searchWeatherService: SearchWeatherServiceProtocol = SearchWeatherService()) {
             self.searchWeatherService = searchWeatherService
         }
@@ -37,6 +69,7 @@ extension ContentView {
 
             do {
                 self.response = try await searchWeatherService.searchCity(name: searchName)
+                searchName = ""
             } catch {
                 print(error)
             }

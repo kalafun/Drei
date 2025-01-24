@@ -32,6 +32,7 @@ struct ContentView: View {
 
                     if viewModel.response != nil {
                         weatherView
+                            .padding()
                     }
 
                     Spacer()
@@ -57,6 +58,35 @@ struct ContentView: View {
             if let temperature = viewModel.temperature {
                 Text(temperature)
                     .font(.title)
+            }
+
+            if let weatherDesc = viewModel.weatherDescription {
+                Text(weatherDesc)
+            }
+
+            Spacer(minLength: 20)
+
+            VStack {
+                HStack(spacing: 20) {
+                    if let windSpeed = viewModel.windSpeed {
+                        HStack(spacing: 4) {
+                            Image(systemName: "wind")
+                            Text(windSpeed)
+                        }
+                    }
+
+                    if let precipation = viewModel.rainPrecipation {
+                        HStack(spacing: 4) {
+                            Image(systemName: "drop")
+                            Text(precipation)
+                        }
+                    } else if let precipitation = viewModel.snowPrecipation {
+                        HStack(spacing: 4) {
+                            Image(systemName: "snowflake")
+                            Text(precipitation)
+                        }
+                    }
+                }
             }
         }
     }

@@ -46,7 +46,9 @@ class SearchWeatherServiceMocked: Service, SearchWeatherServiceProtocol {
                 speed: 0.45,
                 gust: 2.24
             ),
-            name: "Vienna"
+            name: "Vienna",
+            rain: Precipation(oneHour: 0.1),
+            snow: Precipation(oneHour: 0.14)
         )
     }
 }
@@ -84,11 +86,21 @@ struct MainWeather: Decodable {
     }
 }
 
+struct Precipation: Decodable {
+    let oneHour: Float
+    
+    enum CodingKeys: String, CodingKey {
+        case oneHour = "1h"
+    }
+}
+
 struct SearchCityResponse: Decodable {
     let weather: [Weather]
     let main: MainWeather
     let wind: Wind
     let name: String
+    let rain: Precipation?
+    let snow: Precipation?
 }
 
 extension Alamofire.DataRequest {
