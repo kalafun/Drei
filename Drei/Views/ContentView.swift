@@ -15,35 +15,41 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack {
-                    TextField("City name", text: $viewModel.searchName)
-                        .padding()
-                        .background(.black.opacity(0.05))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .padding()
-                        .onSubmit {
-                            Task {
-                                await viewModel.getCity()
-                            }
-                        }
-                        .submitLabel(.search)
-
-                    Spacer()
-
-                    if viewModel.response != nil {
-                        weatherView
-                            .padding()
-                    }
-
-                    Spacer()
-                }
-            }
+            content
             .navigationTitle("Drei Weather")
             .overlay {
                 if viewModel.isLoading {
                     ProgressView()
                 }
+            }
+            .alert(isPresented: $viewModel.showsError, error: viewModel.localizedError, actions: { })
+        }
+    }
+
+    @ViewBuilder
+    var content: some View {
+        ScrollView {
+            VStack {
+                TextField("City name", text: $viewModel.searchName)
+                    .padding()
+                    .background(.black.opacity(0.05))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding()
+                    .onSubmit {
+                        Task {
+                            await viewModel.getCity()
+                        }
+                    }
+                    .submitLabel(.search)
+
+                Spacer()
+
+                if viewModel.response != nil {
+                    weatherView
+                        .padding()
+                }
+
+                Spacer()
             }
         }
     }

@@ -10,4 +10,6 @@ import Foundation
 @MainActor
 class AppViewModel: ObservableObject {
     @Published var isLoading = false
+    @Published var showsError = false
+    var localizedError: WeatherError?
 }

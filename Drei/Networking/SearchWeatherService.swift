@@ -103,15 +103,12 @@ struct Precipation: Decodable {
     }
 }
 
-protocol WeatherResponse: Decodable {
-    var cod: String? { get }
-    var message: String? { get }
+struct WeatherErrorResponse: Decodable {
+    let cod: String?
+    let message: String?
 }
 
-struct SearchCityResponse: WeatherResponse {
-    var cod: String?
-    var message: String?
-
+struct SearchCityResponse: Decodable {
     let weather: [Weather]
     let main: MainWeather
     let wind: Wind
@@ -132,7 +129,7 @@ enum WeatherError: LocalizedError {
 }
 
 extension Alamofire.DataRequest {
-    func responseData<D: WeatherResponse>(decodingType: D.Type) async throws -> D {
+    func responseData<D: Decodable>(decodingType: D.Type) async throws -> D {
         return try await withCheckedThrowingContinuation { continuation in
             self.responseData { response in
                 print(response.request?.urlRequest ?? "NO REQUEST DATA")
@@ -140,15 +137,18 @@ extension Alamofire.DataRequest {
                 if let data = response.data {
                     print(NSString(data: data, encoding: String.Encoding.utf8.rawValue) ?? "")
                     do {
-                        let decodedObject = try JSONDecoder().decode(D.self, from: data)
 
-                        // check for errors:
-                        if let cod = decodedObject.cod {
-                            if cod == "404" {
-                                continuation.resume(throwing: WeatherError.cityNotFound)
+                        // check for error response
+                        if let errorObject = try? JSONDecoder().decode(WeatherErrorResponse.self, from: data) {
+                            if let cod = errorObject.cod {
+                                if cod == "404" {
+                                    continuation.resume(throwing: WeatherError.cityNotFound)
+                                    return
+                                }
                             }
                         }
 
+                        let decodedObject = try JSONDecoder().decode(D.self, from: data)
                         continuation.resume(returning: decodedObject)
                     } catch {
                         continuation.resume(throwing: error)
